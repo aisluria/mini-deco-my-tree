@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Mini Deco My Tree</title>
+<style>
+  body {
+    background-color: #1a1a1a;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 30px;
+  }
+
+  #tree {
+    width: 300px;
+    margin: 0 auto;
+    position: relative;
+    height: 400px;
+    background: linear-gradient(to top, #1a1a1a 70%, transparent 30%);
+  }
+
+  /* Basit ağaç üçgeni */
+  #tree::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-bottom: 120px solid green;
+  }
+
+  .susp {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: green;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .susp:hover {
+    transform: scale(1.2);
+  }
+
+  .nameTag {
+    position: absolute;
+    top: -18px;
+    font-size: 12px;
+    color: yellow;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  #messageBox {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    display: none;
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+</style>
+</head>
+<body>
+
+<h1>Mini Deco My Tree</h1>
+<p>Her süsün sahibi görülebilir, mesaj içeriği sadece sen görebilirsin.</p>
+
+<div id="tree"></div>
+<div id="messageBox"></div>
+
+<script>
+  // Mesajları buraya ekle
+  const messages = [
+    {id:1, name:"Ali", message:"Mutlu Yıllar!", opened:false},
+    {id:2, name:"Ayşe", message:"Sevgi dolu bir yıl!", opened:false},
+    {id:3, name:"Mert", message:"Yeni yılın kutlu olsun!", opened:false},
+    {id:4, name:"Elif", message:"Sağlık ve mutluluk dilerim!", opened:false},
+    {id:5, name:"Can", message:"Harika bir yıl olsun!", opened:false},
+    {id:6, name:"Derya", message:"Bol kahkaha dolu günler!", opened:false},
+    {id:7, name:"Emre", message:"Başarılarla dolu bir yıl!", opened:false}
+  ];
+
+  const tree = document.getElementById("tree");
+  const messageBox = document.getElementById("messageBox");
+
+  // Rastgele süs konumu ve renkleri
+  function randomPosition() {
+    const top = Math.floor(Math.random() * 100) + 50; // 50-150px arası
+    const left = Math.floor(Math.random() * 140) + 80; // 80-220px arası
+    return {top: top + "px", left: left + "px"};
+  }
+
+  const colors = ["red","blue","yellow","pink","orange","purple"];
+
+  messages.forEach(msg => {
+    const susp = document.createElement("div");
+    susp.className = "susp";
+    const pos = randomPosition();
+    susp.style.top = pos.top;
+    susp.style.left = pos.left;
+    susp.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+
+    // Süsün üstüne isim etiketi
+    const nameTag = document.createElement("div");
+    nameTag.className = "nameTag";
+    nameTag.innerText = msg.name;
+    susp.appendChild(nameTag);
+
+    susp.addEventListener("click", () => {
+      if(!msg.opened){
+        messageBox.style.display = "block";
+        messageBox.innerHTML = `<strong>${msg.name}</strong>: ${msg.message}`;
+        msg.opened = true;
+        susp.style.backgroundColor = "green"; // açılan süs rengi değişir
+      } else {
+        messageBox.style.display = "none";
+      }
+    });
+
+    tree.appendChild(susp);
+  });
+</script>
+
+</body>
+</html>
